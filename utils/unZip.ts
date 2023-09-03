@@ -1,9 +1,14 @@
 import JSZip from "jszip";
 
+interface FileData {
+  filename: string,
+  data: Blob
+}
+
 /**
  * 解压 zip 文件
  */
-const unZip = async (data) => {
+const unZip = async (data): Promise<FileData[]> => {
   const zip = new JSZip();
   const zipData = await zip.loadAsync(data)
 

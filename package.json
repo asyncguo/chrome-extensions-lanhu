@@ -10,6 +10,11 @@
     "test": "plasmo test"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@ant-design/pro-components": "^2.6.16",
+    "antd": "^5.8.6",
+    "dexie": "^3.2.4",
+    "dexie-react-hooks": "^1.1.6",
     "jszip": "^3.10.1",
     "plasmo": "0.82.0",
     "react": "18.2.0",
@@ -30,6 +35,16 @@
     ],
     "permissions": [
       "scripting"
+    ],
+    "web_accessible_resources": [
+      {
+        "matches": [
+          "https://lanhuapp.com/*"
+        ],
+        "resources": [
+          "tabs/image-record.html"
+        ]
+      }
     ]
   }
 }

@@ -1,3 +1,5 @@
+import { imageDB } from "~Storage"
+
 /**
  * 代理蓝湖下载时的 a 标签的 dispatchEvent
  */
@@ -12,7 +14,9 @@ function aLinkProxy() {
       const href = this.href
       const filename = this.download
       if (nodeName === "A" && filename && /^blob:/.test(href)) {
-        console.warn(filename, href)
+        console.warn(filename, href)   
+        console.warn('chrome', chrome);
+        
         const blob = await fetch(href).then(r => r.blob());
         window.postMessage({
           blob,
@@ -41,5 +45,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       .catch((err) => {
         console.error(err)
       })
+  }
+})
+
+chrome.runtime.onMessage.addListener(async (message, sender, senderResponse) => {
+  if (message.type === 'ADD_IMAGE') {
+    imageDB.add({
+      ...message.payload
+    })
   }
 })

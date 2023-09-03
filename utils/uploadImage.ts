@@ -5,7 +5,7 @@ const addPrefix = (url: string): string => {
 /**
  * 上传图片
  */
-const uploadPic = async (file: Blob) => {
+const uploadImage = async (file: Blob) => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('path', '/zhuanzh/');
@@ -23,5 +23,5 @@ const uploadPic = async (file: Blob) => {
 }
 
 export {
-  uploadPic
+  uploadImage
 }
