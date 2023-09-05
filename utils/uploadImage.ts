@@ -2,6 +2,12 @@ const addPrefix = (url: string): string => {
   return `https://pic${Math.ceil(Math.random() * 6)}.zhuanstatic.com/zhuanzh/${url}`
 }
 
+const delay = () => new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('https://pic2.zhuanstatic.com/zhuanzh/052569db-cfbf-4856-892a-2ef7ceb8ad88.png')
+  }, Math.random() * 5000);
+})
+
 /**
  * 上传图片
  */

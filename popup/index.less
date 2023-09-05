@@ -2,7 +2,25 @@ body {
   width: 260px;
   // background: #f6f7f9;
 }
-
-.lanhu-popup{
-  padding: 12px 12px 0;
+@media (max-width: 575px) {
+  .lanhu-popup{
+    padding: 12px 12px 0;
+  
+    .popup-form{
+      flex-direction: column;
+  
+      .ant-form-item{
+        margin-inline-end: 0;
+      }
+  
+      .ant-form-item-label{
+        flex: auto;
+      }
+  
+      .ant-form-item-control{
+        flex: 1;
+        text-align: right;
+      }
+    }
+  }
 }

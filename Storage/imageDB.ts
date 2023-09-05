@@ -1,9 +1,20 @@
 import Dexie, { type Table } from 'dexie';
 
+const omitNullOrUndefined = (rawData: Record<string, any>) => {
+  const fiterData = {}
+  for (const key in rawData) {
+    if (rawData.hasOwnProperty(key) && rawData[key] != null) {
+      fiterData[key] = rawData[key]
+    }
+  }
+
+  return fiterData
+}
+
 export interface ImageEntry {
   id?: number;
   /** 图片名称 */
-  name: string;
+  filename: string;
   /** 图片路径 */
   cdn_url: string;
   /** 图片尺寸 */
@@ -17,9 +28,11 @@ export interface ImageEntry {
 }
 
 export interface ImageQueryOptions {
-  pageNumber?: number;
+  filename?: string;
+  startTime?: number;
+  endTime?: number;
   pageSize?: number;
-  updateTime?: number;
+  pageNumber?: number;
 }
 
 class ImageEntryDexie extends Dexie {
@@ -28,7 +41,7 @@ class ImageEntryDexie extends Dexie {
   constructor() {
     super('lanhu_images_db');
     this.version(1).stores({
-      images: '++id, name, cdn_url, origin_size, zip_size, upload_time' // Primary key and indexed props
+      images: '++id, filename, cdn_url, origin_size, zip_size, upload_time' // Primary key and indexed props
     });
   }
 
@@ -45,23 +58,54 @@ class ImageEntryDexie extends Dexie {
     }
   }
 
-  async find(query: ImageQueryOptions) {    
-    const { pageNumber, pageSize } = query
+  async find(query: ImageQueryOptions) {
+    console.log('query',query);
+      
+    const { 
+      filename,
+      startTime,
+      endTime,
+      pageNumber,
+      pageSize
+    } = query
     const offset = (pageNumber - 1) * pageSize;
-    const data = await this.images
+
+    const collection = this.images
+      .filter(v => filename == null || filename == '' ? true : filename === v.filename)
+      .filter(v => startTime == null ? true : v.upload_time >= startTime && v.upload_time <= endTime)
+    const total = await collection.count()
+    const data = await collection
       .reverse()
       .offset(offset)
       .limit(pageSize)
       .toArray()
-    
-    const total = await this.images.count()
 
     return {
       data,
       total
     }
   }
+
+  async deleteById(id: number) {
+    try {
+      const res = await this.images.where('id').equals(id).delete()
+      
+      return res == 1 ? true : false
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async clearAll() {
+    try {
+      await this.images.clear()
+      return true
+
+    } catch (error) {
+      throw error 
+    }
+  }
 }
 
 /** 通过 IndexedDB 对已上传的图片进行存储 */
-export const imageDB = new ImageEntryDexie();
+export const imagedb = new ImageEntryDexie();

@@ -2,7 +2,7 @@ import JSZip from "jszip";
 
 interface FileData {
   filename: string,
-  data: Blob
+  blob: Blob
 }
 
 /**
@@ -22,7 +22,7 @@ const unZip = async (data): Promise<FileData[]> => {
           .async('uint8array')
           .then((u8) => ({
             filename: file.name,
-            data: new Blob([u8])
+            blob: new Blob([u8])
           }))
       )
     }

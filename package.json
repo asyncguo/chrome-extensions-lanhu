@@ -12,12 +12,17 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@ant-design/pro-components": "^2.6.16",
+    "@plasmohq/storage": "^1.7.2",
+    "ahooks": "^3.7.8",
     "antd": "^5.8.6",
+    "dayjs": "^1.11.9",
     "dexie": "^3.2.4",
     "dexie-react-hooks": "^1.1.6",
     "jszip": "^3.10.1",
+    "nanoid": "^4.0.2",
     "plasmo": "0.82.0",
     "react": "18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
@@ -25,6 +30,7 @@
     "@types/chrome": "0.0.243",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
+    "@types/react-copy-to-clipboard": "^5.0.4",
     "@types/react-dom": "18.2.7",
     "prettier": "3.0.2",
     "typescript": "5.1.6"

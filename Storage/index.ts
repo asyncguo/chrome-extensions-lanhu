@@ -1,1 +1,1 @@
-export { imageDB } from './imageDB';
+export { imagedb } from './imagedb';
