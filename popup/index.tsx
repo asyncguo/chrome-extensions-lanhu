@@ -6,6 +6,8 @@ import "antd/dist/reset.css"
 import './index.less'
 import { useDebounceFn } from "ahooks"
 
+import pkg from './../package.json'
+
 export interface IImageUploadConfig {
   /** 开启自动上传 CDN */
   autoUpload?: boolean
@@ -88,10 +90,11 @@ function IndexPopup() {
             }}>图片记录</a>
         </Col>
 
-        {/* <Col style={{ cursor: 'pointer' }}>
-          <SettingOutlined />
-          <span style={{ marginLeft: 6 }}>设置</span>
-        </Col> */}
+        <Col style={{ cursor: 'pointer' }}>
+          v{pkg.version}
+          {/* <SettingOutlined />
+          <span style={{ marginLeft: 6 }}>设置</span> */}
+        </Col>
       </Row>
     </>
   )

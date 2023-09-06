@@ -1,11 +1,11 @@
-import { CopyOutlined, LoadingOutlined } from "@ant-design/icons";
+import { CheckCircleTwoTone, CopyOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Image, Col, Drawer, List, Row, Space, Spin, message } from "antd";
 import type { PlasmoCSConfig } from "plasmo"
 import React, { useEffect, useState } from "react";
 import ByteSize from "~components/ByteSize";
 import CopyToClipboard from "~components/CopyToClipboard";
 import type { ImageEntry } from "~storage/imagedb";
-import { genUid, getImageSize, unZip, uploadImage } from "~utils";
+import { copyToClipboard, genUid, getImageSize, unZip, uploadImage } from "~utils";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://lanhuapp.com/*"]
@@ -169,6 +169,8 @@ const DownloadImage = () => {
               }
     
               setImageList([...waitUploadImages])
+
+              return res
             })
           )
         }
@@ -176,8 +178,16 @@ const DownloadImage = () => {
         setImageList([...waitUploadImages])
         setOpen(true)
 
-        Promise.allSettled(waitUploadImagesQueue).then(() => {
+        Promise.allSettled<IImageType>(waitUploadImagesQueue).then(async (uploadRes) => {
           setComplate(true)
+          const uploadResStr = uploadRes
+            .filter(v => v.status === 'fulfilled')
+            .map((v: PromiseFulfilledResult<IImageType>) => v.value.cdn_url).join('\n')
+          
+          const res = await copyToClipboard(uploadResStr)
+          if (res) {
+            message.success('已将图片 CDN 链接复制到剪切板～')
+          }
         })
       }
     }
@@ -192,7 +202,10 @@ const DownloadImage = () => {
     <Drawer
       title={
         completed
-          ? '上传图片列表'
+          ? <Space>
+              <CheckCircleTwoTone twoToneColor="#52c41a" />
+              <span>已完成</span>
+            </Space>
           : <Space>
               <LoadingOutlined />
               <span>正在上传照片</span>

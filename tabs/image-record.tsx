@@ -23,7 +23,11 @@ function ImageRecord() {
       hideInSearch: true,
       valueType: 'image',
       fieldProps: {
-        width: 64
+        width: 64,
+        height: 64,
+        style: {
+          objectFit: 'contain'
+        }
       }
     },
     { 
@@ -99,6 +103,7 @@ function ImageRecord() {
       title='图片上传记录'>
       <ProTable
         rowKey='id'
+        bordered
         actionRef={tableRef}
         columns={columns}
         request={async (params) => {
