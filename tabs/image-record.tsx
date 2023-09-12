@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { imagedb } from '~storage';
 import type { ImageEntry } from '~storage/imagedb';
 import { ProTable, type ProColumns, PageContainer, type ActionType } from '@ant-design/pro-components';
@@ -6,28 +6,87 @@ import "antd/dist/reset.css"
 import ByteSize from '~components/ByteSize';
 import CopyToClipboard from '~components/CopyToClipboard';
 import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Space, message, theme } from 'antd';
+import { Button, Popconfirm, Space, message, theme, Image, Col, Row } from 'antd';
 import dayjs from 'dayjs';
 
 const { useToken } = theme
+
+const ImageView = (props: React.PropsWithChildren<{
+  url: string
+  filename?: string
+}>) => {
+  const { url, filename } = props
+  const [imageSize, setImageSize] = useState<{
+    width?: number,
+    height?: number
+  }>();
+
+  return (
+    <Row gutter={16}>
+      <Col>
+        <Image
+          width={64}
+          height={64}
+          src={url}
+          style={{
+            objectFit: 'contain',
+            border: '1px solid rgba(0,0,0,.2)',
+            borderRadius: '8px'
+          }}
+          onLoad={(el) => {
+            const element = el.target as HTMLImageElement
+            setImageSize({
+              width: element.naturalWidth,
+              height: element.naturalHeight
+            })
+          }}/>
+      </Col>
+      <Col>
+        <div
+          // style={{
+          //   whiteSpace: 'nowrap',
+          //   textOverflow: 'ellipsis',
+          //   overflow: 'hidden'
+          // }}
+          >
+            <span>链接：</span>
+            {
+              url
+                ? <a
+                    onClick={() => {
+                      window.open(url)
+                    }}>
+                      {url}
+                    </a>
+                : '-'
+            }
+        </div>
+        <div>名称：{filename}</div>
+        <div>尺寸：{imageSize?.width} x {imageSize?.height}</div>
+      </Col>
+    </Row>
+  )
+}
 
 function ImageRecord() {
   const { token } = useToken()
   const tableRef = useRef<ActionType>()
 
   const columns: ProColumns<ImageEntry>[] = [
-    { dataIndex: 'filename', title: '图片名称' },
+    {
+      dataIndex: 'filename',
+      title: '图片名称',
+      hideInTable: true
+    },
     { 
       dataIndex: 'cdn_url',
-      title: '图片路径',
+      title: '图片信息',
       hideInSearch: true,
-      valueType: 'image',
-      fieldProps: {
-        width: 64,
-        height: 64,
-        style: {
-          objectFit: 'contain'
-        }
+      ellipsis: true,
+      render: (_, record) => {
+        return (
+          <ImageView url={record.cdn_url} filename={record.filename} />
+        )
       }
     },
     { 

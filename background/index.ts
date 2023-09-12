@@ -65,10 +65,11 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 })
 
 chrome.runtime.onMessage.addListener(async (message, sender, senderResponse) => {
-  switch (message.type) {
+  const { type, payload } = message || {}
+  switch (type) {
     case 'ADD_IMAGE':
       imagedb.add({
-        ...message.payload
+        ...payload
       })
       break;
     case 'OPEN_TAB':
