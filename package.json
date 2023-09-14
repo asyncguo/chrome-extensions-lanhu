@@ -1,12 +1,13 @@
 {
   "name": "lanhu",
   "displayName": "Lanhu",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "蓝湖工具集，支持自动上传切图～",
   "author": "asyncguo",
   "scripts": {
     "dev": "plasmo dev",
-    "build": "plasmo build",
+    "build": "plasmo build --zip",
+    "postbuild": "tsx scripts/rename-zip",
     "test": "plasmo test"
   },
   "dependencies": {

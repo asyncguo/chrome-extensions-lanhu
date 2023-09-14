@@ -37,7 +37,7 @@ const addImage = (payload: Omit<ImageEntry, 'upload_time'>) => {
   chrome.runtime.sendMessage({
     type: 'ADD_IMAGE',
     payload: {
-      ...payload      
+      ...payload
     }
   })
 }

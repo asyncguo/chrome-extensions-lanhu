@@ -116,7 +116,7 @@ function IndexPopup() {
                     style={{ marginLeft: 6 }}
                     onClick={async () => {
                       try {
-                        const response = await fetch('https://dl.zhuanstatic.com/fecommon/chrome-mv3-prod.zip', {
+                        const response = await fetch('https://dl.zhuanstatic.com/fecommon/chrome-extension-lanhu.zip', {
                           method: 'GET',
                         })
                         const zipBlob = await response.blob()
